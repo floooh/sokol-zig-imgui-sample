@@ -1,5 +1,4 @@
 const std = @import("std");
-const sokol = @import("sokol");
 
 pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
