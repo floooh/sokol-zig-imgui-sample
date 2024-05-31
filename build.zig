@@ -15,8 +15,10 @@ pub fn build(b: *std.Build) !void {
 
     const dep_sokol = b.dependency("sokol", .{});
 
-    // need to integrate sokol manually because the sokol C library needs
-    // to be built with cimgui support (which means passing a cimgui dependency into the sokol build)
+    // need to integrate sokol 'manually' because a cimgui header search
+    // path needs to be injected into the lib_sokol compile step without
+    // the sokol-zig bindings declaring cimgui as a package dependency
+    // (which doesn't work anyway because cimgui has git submodules)
     const mod_sokol = b.addModule("sokol", .{ .root_source_file = dep_sokol.path("src/sokol/sokol.zig") });
     const lib_sokol = try sokol.buildLibSokol(dep_sokol.builder, .{
         .target = target,
