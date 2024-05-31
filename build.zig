@@ -13,7 +13,11 @@ pub fn build(b: *std.Build) !void {
     b.installArtifact(exe);
 
     // build the sokol C library with sokol-imgui support
-    const dep_sokol = b.dependency("sokol", .{ .imgui = true });
+    const dep_sokol = b.dependency("sokol", .{
+        .target = target,
+        .optimize = optimize,
+        .imgui = true,
+    });
 
     // inject the cimgui header search path into the sokol C library compile step
     dep_sokol.artifact("sokol").addIncludePath(b.path("cimgui"));
