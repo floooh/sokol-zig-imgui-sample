@@ -4,6 +4,8 @@ const sg = sokol.gfx;
 const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
+
+// import cimgui via @cImport
 const ig = @cImport({
     @cDefine("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
     @cInclude("cimgui.h");
@@ -14,19 +16,25 @@ const state = struct {
 };
 
 export fn init() void {
+    // initialize sokol-gfx
     sg.setup(.{
         .environment = sglue.environment(),
         .logger = .{ .func = slog.func },
     });
+    // initialize sokol-imgui
     simgui.setup(.{
         .logger = .{ .func = slog.func },
     });
 
     // initial clear color
-    state.pass_action.colors[0] = .{ .load_action = .CLEAR, .clear_value = .{ .r = 0.0, .g = 0.5, .b = 1.0, .a = 1.0 } };
+    state.pass_action.colors[0] = .{
+        .load_action = .CLEAR,
+        .clear_value = .{ .r = 0.0, .g = 0.5, .b = 1.0, .a = 1.0 },
+    };
 }
 
 export fn frame() void {
+    // call simgui.newFrame() before any ImGui calls
     simgui.newFrame(.{
         .width = sapp.width(),
         .height = sapp.height(),
@@ -42,15 +50,20 @@ export fn frame() void {
     ig.igEnd();
     //=== UI CODE ENDS HERE
 
+    // call simgui.render() inside a sokol-gfx pass
     sg.beginPass(.{ .action = state.pass_action, .swapchain = sglue.swapchain() });
     simgui.render();
     sg.endPass();
     sg.commit();
 }
 
-export fn cleanup() void {}
+export fn cleanup() void {
+    simgui.shutdown();
+    sg.shutdown();
+}
 
 export fn event(ev: [*c]const sapp.Event) void {
+    // forward input events to sokol-imgui
     _ = simgui.handleEvent(ev.*);
 }
 
