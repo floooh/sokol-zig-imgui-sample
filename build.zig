@@ -13,21 +13,11 @@ pub fn build(b: *std.Build) !void {
     });
     b.installArtifact(exe);
 
-    const dep_sokol = b.dependency("sokol", .{});
+    // build the sokol C library with sokol-imgui support
+    const dep_sokol = b.dependency("sokol", .{ .imgui = true });
 
-    // need to integrate sokol 'manually' because a cimgui header search
-    // path needs to be injected into the lib_sokol compile step without
-    // the sokol-zig bindings declaring cimgui as a package dependency
-    // (which doesn't work anyway because cimgui has git submodules)
-    const mod_sokol = b.addModule("sokol", .{ .root_source_file = dep_sokol.path("src/sokol/sokol.zig") });
-    const lib_sokol = try sokol.buildLibSokol(dep_sokol.builder, .{
-        .target = target,
-        .optimize = optimize,
-        .backend = .auto,
-        .with_sokol_imgui = true,
-    });
-    mod_sokol.linkLibrary(lib_sokol);
-    lib_sokol.addIncludePath(b.path("cimgui"));
+    // inject the cimgui header search path into the sokol C library compile step
+    dep_sokol.artifact("sokol").addIncludePath(b.path("cimgui"));
 
     // build cimgui as C/C++ library
     const lib_cimgui = b.addStaticLibrary(.{
@@ -48,7 +38,7 @@ pub fn build(b: *std.Build) !void {
         },
     });
 
-    exe.root_module.addImport("sokol", mod_sokol);
+    exe.root_module.addImport("sokol", dep_sokol.module("sokol"));
     exe.linkLibrary(lib_cimgui);
     exe.root_module.addIncludePath(b.path("cimgui"));
 
