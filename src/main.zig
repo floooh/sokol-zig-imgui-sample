@@ -4,7 +4,10 @@ const sg = sokol.gfx;
 const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
-const ig = @import("cimgui.zig");
+const ig = @cImport({
+    @cDefine("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
+    @cInclude("cimgui.h");
+});
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
