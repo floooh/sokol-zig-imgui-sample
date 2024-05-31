@@ -1,24 +1,66 @@
-const std = @import("std");
+const sokol = @import("sokol");
+const slog = sokol.log;
+const sg = sokol.gfx;
+const sapp = sokol.app;
+const sglue = sokol.glue;
+const simgui = sokol.imgui;
+const ig = @import("cimgui.zig");
 
-pub fn main() !void {
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
+const state = struct {
+    var pass_action: sg.PassAction = .{};
+};
 
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+export fn init() void {
+    sg.setup(.{
+        .environment = sglue.environment(),
+        .logger = .{ .func = slog.func },
+    });
+    simgui.setup(.{
+        .logger = .{ .func = slog.func },
+    });
 
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
-
-    try bw.flush(); // don't forget to flush!
+    // initial clear color
+    state.pass_action.colors[0] = .{ .load_action = .CLEAR, .clear_value = .{ .r = 0.0, .g = 0.5, .b = 1.0, .a = 1.0 } };
 }
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+export fn frame() void {
+    simgui.newFrame(.{
+        .width = sapp.width(),
+        .height = sapp.height(),
+        .delta_time = sapp.frameDuration(),
+        .dpi_scale = sapp.dpiScale(),
+    });
+
+    //=== UI CODE STARTS HERE
+    ig.igSetNextWindowPos(.{ .x = 10, .y = 10 }, ig.ImGuiCond_Once, .{ .x = 0, .y = 0 });
+    ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
+    _ = ig.igBegin("Hello Dear ImGui!", 0, ig.ImGuiWindowFlags_None);
+    _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);
+    ig.igEnd();
+    //=== UI CODE ENDS HERE
+
+    sg.beginPass(.{ .action = state.pass_action, .swapchain = sglue.swapchain() });
+    simgui.render();
+    sg.endPass();
+    sg.commit();
+}
+
+export fn cleanup() void {}
+
+export fn event(ev: [*c]const sapp.Event) void {
+    _ = simgui.handleEvent(ev.*);
+}
+
+pub fn main() void {
+    sapp.run(.{
+        .init_cb = init,
+        .frame_cb = frame,
+        .cleanup_cb = cleanup,
+        .event_cb = event,
+        .window_title = "sokol-zig + Dear Imgui",
+        .width = 800,
+        .height = 600,
+        .icon = .{ .sokol_default = true },
+        .logger = .{ .func = slog.func },
+    });
 }

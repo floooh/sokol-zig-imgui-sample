@@ -6,10 +6,6 @@
             .url = "/Users/floh/projects/sokol/bindgen/sokol-zig",
             .hash = "1220d1adbebb8e85a193271b8dca7df64c08a8ce2c7fc25cd3b43d5018df7b52d343",
         },
-        .cimgui = .{
-            .url = "git+https://github.com/cimgui/cimgui#1.90.7",
-            .hash = "1220d925a8374fbc3a21a5b46025fb867672d85b4099d2151bed607618e08b0cd71c",
-        },
     },
     .paths = .{""},
 }
