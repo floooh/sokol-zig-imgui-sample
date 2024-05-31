@@ -6,6 +6,9 @@
             .url = "git+https://github.com/floooh/sokol-zig.git#7fec5dad83529f919901e8a064c3bb586b20f6e6",
             .hash = "1220ed9c9599bfa99edbecb96ff323f1b2cb25dc74f2e1ad4fd81920df02c8471ce2",
         },
+        .cimgui = .{
+            .path = "deps/cimgui",
+        },
     },
     .paths = .{""},
 }
