@@ -5,11 +5,7 @@ const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
 
-// import cimgui via @cImport
-const ig = @cImport({
-    @cDefine("CIMGUI_DEFINE_ENUMS_AND_STRUCTS", "");
-    @cInclude("cimgui.h");
-});
+const ig = @import("cimgui");
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
