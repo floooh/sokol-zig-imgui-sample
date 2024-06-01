@@ -1,11 +1,10 @@
+const ig = @import("cimgui");
 const sokol = @import("sokol");
 const slog = sokol.log;
 const sg = sokol.gfx;
 const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
-
-const ig = @import("cimgui");
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
