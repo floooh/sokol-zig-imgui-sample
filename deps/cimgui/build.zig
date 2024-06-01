@@ -2,16 +2,15 @@ const std = @import("std");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
-
     const optimize = b.standardOptimizeOption(.{});
 
-    const cimgui_dep = b.dependency("cimgui", .{});
-    const imgui_dep = b.dependency("imgui", .{});
+    const dep_cimgui = b.dependency("cimgui", .{});
+    const dep_imgui = b.dependency("imgui", .{});
 
     // create file tree for cimgui and imgui
     const wf = b.addNamedWriteFiles("cimgui");
-    _ = wf.addCopyDirectory(cimgui_dep.path(""), "", .{});
-    _ = wf.addCopyDirectory(imgui_dep.path(""), "imgui", .{});
+    _ = wf.addCopyDirectory(dep_cimgui.path(""), "", .{});
+    _ = wf.addCopyDirectory(dep_imgui.path(""), "imgui", .{});
     const root = wf.getDirectory();
 
     // build cimgui as C/C++ library
@@ -21,7 +20,6 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-
     lib_cimgui.linkLibCpp();
     lib_cimgui.addCSourceFiles(.{
         .root = root,
@@ -40,14 +38,13 @@ pub fn build(b: *std.Build) void {
     lib_cimgui.step.dependOn(&wf.step);
 
     // translate-c the cimgui.h file
-    const ziphfile = cimgui_dep.path("cimgui.h");
+    const ziphfile = dep_cimgui.path("cimgui.h");
     const translateC = b.addTranslateC(.{
         .root_source_file = ziphfile,
         .target = target,
         .optimize = optimize,
     });
     translateC.defineCMacroRaw("CIMGUI_DEFINE_ENUMS_AND_STRUCTS=\"\"");
-
     const entrypoint = translateC.getOutput();
 
     // build cimgui as a module with the header file as the entrypoint
@@ -58,6 +55,5 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
         .link_libcpp = true,
     });
-
     mod_cimgui.linkLibrary(lib_cimgui);
 }

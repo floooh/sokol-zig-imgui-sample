@@ -23,9 +23,8 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
 
-    const cimgui_root = dep_cimgui.namedWriteFiles("cimgui").getDirectory();
-
     // inject the cimgui header search path into the sokol C library compile step
+    const cimgui_root = dep_cimgui.namedWriteFiles("cimgui").getDirectory();
     dep_sokol.artifact("sokol").addIncludePath(cimgui_root);
 
     exe.root_module.addImport("sokol", dep_sokol.module("sokol"));
