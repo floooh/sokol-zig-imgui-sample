@@ -18,32 +18,18 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
         .imgui = true,
     });
-
-    // inject the cimgui header search path into the sokol C library compile step
-    dep_sokol.artifact("sokol").addIncludePath(b.path("cimgui"));
-
-    // build cimgui as C/C++ library
-    const lib_cimgui = b.addStaticLibrary(.{
-        .name = "cimgui",
+    const dep_cimgui = b.dependency("cimgui", .{
         .target = target,
         .optimize = optimize,
-        .link_libc = true,
-    });
-    lib_cimgui.linkLibCpp();
-    lib_cimgui.addCSourceFiles(.{
-        .files = &.{
-            "cimgui/cimgui.cpp",
-            "cimgui/imgui/imgui.cpp",
-            "cimgui/imgui/imgui_widgets.cpp",
-            "cimgui/imgui/imgui_draw.cpp",
-            "cimgui/imgui/imgui_tables.cpp",
-            "cimgui/imgui/imgui_demo.cpp",
-        },
     });
 
+    const cimgui_root = dep_cimgui.namedWriteFiles("cimgui").getDirectory();
+
+    // inject the cimgui header search path into the sokol C library compile step
+    dep_sokol.artifact("sokol").addIncludePath(cimgui_root);
+
     exe.root_module.addImport("sokol", dep_sokol.module("sokol"));
-    exe.linkLibrary(lib_cimgui);
-    exe.root_module.addIncludePath(b.path("cimgui"));
+    exe.root_module.addImport("cimgui", dep_cimgui.module("cimgui"));
 
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());
