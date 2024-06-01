@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) !void {
     const dep_sokol = b.dependency("sokol", .{
         .target = target,
         .optimize = optimize,
-        .imgui = true,
+        .with_sokol_imgui = true,
     });
     const dep_cimgui = b.dependency("cimgui", .{
         .target = target,
@@ -25,7 +25,7 @@ pub fn build(b: *std.Build) !void {
 
     // inject the cimgui header search path into the sokol C library compile step
     const cimgui_root = dep_cimgui.namedWriteFiles("cimgui").getDirectory();
-    dep_sokol.artifact("sokol").addIncludePath(cimgui_root);
+    dep_sokol.artifact("sokol_clib").addIncludePath(cimgui_root);
 
     exe.root_module.addImport("sokol", dep_sokol.module("sokol"));
     exe.root_module.addImport("cimgui", dep_cimgui.module("cimgui"));
