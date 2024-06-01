@@ -38,9 +38,9 @@ pub fn build(b: *std.Build) void {
     lib_cimgui.step.dependOn(&wf.step);
 
     // translate-c the cimgui.h file
-    const ziphfile = dep_cimgui.path("cimgui.h");
+    const cimgui_h = dep_cimgui.path("cimgui.h");
     const translateC = b.addTranslateC(.{
-        .root_source_file = ziphfile,
+        .root_source_file = cimgui_h,
         .target = target,
         .optimize = optimize,
     });
