@@ -6,4 +6,6 @@ On macOS, Windows and Linux just run:
 
 `zig build run`
 
-> NOTE: web support is planned but not yet implemented
+To build and run the web version:
+
+`zig build -Dtarget=wasm32-emscripten -Doptimize=ReleaseSmall run`
