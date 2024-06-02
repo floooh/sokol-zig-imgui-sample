@@ -64,7 +64,13 @@ fn buildWasm(b: *Build, target: ResolvedTarget, optimize: OptimizeMode, dep_soko
     // the cimgui C library otherwise the C/C++ code won't find
     // C stdlib headers
     const emsdk_incl_path = dep_emsdk.path("upstream/emscripten/cache/sysroot/include");
-    dep_cimgui.artifact("cimgui").addSystemIncludePath(emsdk_incl_path);
+    dep_cimgui.artifact("cimgui_clib").addSystemIncludePath(emsdk_incl_path);
+
+    // all C libraries need to depend on the sokol library, when building for
+    // WASM this makes sure that the Emscripten SDK has been setup before
+    // C compilation is attempted (since the sokol C library depends on the
+    // Emscripten SDK setup step)
+    dep_cimgui.artifact("cimgui_clib").step.dependOn(&dep_sokol.artifact("sokol_clib").step);
 
     // create a build step which invokes the Emscripten linker
     const link_step = try sokol.emLinkStep(b, .{

@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
 
     // build cimgui as C/C++ library
     const lib_cimgui = b.addStaticLibrary(.{
-        .name = "cimgui",
+        .name = "cimgui_clib",
         .target = target,
         .optimize = optimize,
         .link_libc = true,
