@@ -43,12 +43,12 @@ pub fn build(b: *std.Build) void {
     lib_cimgui.step.dependOn(&wf.step);
 
     // translate-c the cimgui.h file
-    // NOTE: run this with a default target, that way we don't need to inject
+    // NOTE: always run this with the host target, that way we don't need to inject
     // the Emscripten SDK include path into the translate-C step when building for WASM
     const cimgui_h = dep_cimgui.path("cimgui.h");
     const translateC = b.addTranslateC(.{
         .root_source_file = cimgui_h,
-        .target = b.resolveTargetQuery(.{}),
+        .target = b.host,
         .optimize = optimize,
     });
     translateC.defineCMacroRaw("CIMGUI_DEFINE_ENUMS_AND_STRUCTS=\"\"");
