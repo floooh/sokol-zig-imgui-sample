@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -34,14 +35,20 @@ pub fn build(b: *std.Build) void {
     });
     lib_cimgui.addIncludePath(root);
 
+    // make cimgui available as artifact, this then allows to inject
+    // the Emscripten include path in another build.zig
+    b.installArtifact(lib_cimgui);
+
     // lib compilation depends on file tree
     lib_cimgui.step.dependOn(&wf.step);
 
     // translate-c the cimgui.h file
+    // NOTE: run this with a default target, that way we don't need to inject
+    // the Emscripten SDK include path into the translate-C step when building for WASM
     const cimgui_h = dep_cimgui.path("cimgui.h");
     const translateC = b.addTranslateC(.{
         .root_source_file = cimgui_h,
-        .target = target,
+        .target = b.resolveTargetQuery(.{}),
         .optimize = optimize,
     });
     translateC.defineCMacroRaw("CIMGUI_DEFINE_ENUMS_AND_STRUCTS=\"\"");
