@@ -10,4 +10,4 @@ On macOS, Windows and Linux just run:
 
 To build and run the web version:
 
-`zig build -Dtarget=wasm32-emscripten -Doptimize=ReleaseSmall run`
+`zig build --release=small -Dtarget=wasm32-emscripten run`
