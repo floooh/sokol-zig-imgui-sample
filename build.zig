@@ -9,7 +9,7 @@ pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // note that the sokol dependency is built with `.with_imgui_sokol = true`
+    // note that the sokol dependency is built with `.with_sokol_imgui = true`
     const dep_sokol = b.dependency("sokol", .{
         .target = target,
         .optimize = optimize,
