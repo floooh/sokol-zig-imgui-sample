@@ -4,12 +4,12 @@
 
     .dependencies = .{
         .cimgui = .{
-            .url = "git+https://github.com/cimgui/cimgui.git#1.90.7",
-            .hash = "1220d925a8374fbc3a21a5b46025fb867672d85b4099d2151bed607618e08b0cd71c",
+            .url = "git+https://github.com/cimgui/cimgui.git#1.91.1",
+            .hash = "122067e25fdf4d7117ba3de74d6403d61cd5c9c783b7eae974038132eb97f4ff1609",
         },
         .imgui = .{
-            .url = "git+https://github.com/ocornut/imgui.git#v1.90.7",
-            .hash = "122072b125179c7cbdbbee8fa81d22a1050a950ad61cfeefee8dc0dca5423b5d05b9",
+            .url = "git+https://github.com/ocornut/imgui.git#v1.91.1",
+            .hash = "1220ae2947eb39d1512e1dde5b9d044dd40f25772551ca203acf9ba9c4de6cefbdcd",
         },
     },
     .paths = .{
