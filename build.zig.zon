@@ -3,8 +3,8 @@
     .version = "0.0.0",
     .dependencies = .{
         .sokol = .{
-            .url = "git+https://github.com/floooh/sokol-zig.git#0f6aebda6a12038917e97d4a6c850b1d4a7902f1",
-            .hash = "12201482ec206c169044989dfba7a1a688371ad7239bf0830d463826acb2373ca8a5",
+            .url = "git+https://github.com/floooh/sokol-zig.git",
+            .hash = "12201b62a6fd9e15e0b78a4fbcda3ac907a423446c68c6b8614c9b3b21d24a955639",
         },
         .cimgui = .{
             .path = "deps/cimgui",
