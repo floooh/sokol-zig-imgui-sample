@@ -38,7 +38,7 @@ export fn frame() void {
     });
 
     //=== UI CODE STARTS HERE
-    ig.igSetNextWindowPos(.{ .x = 10, .y = 10 }, ig.ImGuiCond_Once, .{ .x = 0, .y = 0 });
+    ig.igSetNextWindowPos(.{ .x = 10, .y = 10 }, ig.ImGuiCond_Once);
     ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
     _ = ig.igBegin("Hello Dear ImGui!", 0, ig.ImGuiWindowFlags_None);
     _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);

@@ -3,11 +3,12 @@
     .version = "0.0.0",
     .dependencies = .{
         .sokol = .{
-            .url = "git+https://github.com/floooh/sokol-zig.git#6ac38c06751b320fdf67ba81e86e03aebaf1a0d4",
-            .hash = "1220f0dab58f9fa0d140f8087405d1bcad99b7a913a9d78abf9c4d74a266992ab898",
+            .url = "git+https://github.com/floooh/sokol-zig.git#36b836caeed96d11b26c6593bc22634454b98a20",
+            .hash = "122095e203474f7f453ab4f57fdfdd70c8e775f00b9b392ab044778aa2e3ecbd4d6f",
         },
         .cimgui = .{
-            .path = "deps/cimgui",
+            .url = "git+https://github.com/floooh/dcimgui.git#e58cd9b38723fd077f67419e8eee455da29156f2",
+            .hash = "1220bb58d62d795d3a9839fe16449a8a84e66c9f77ab84889a589136b2e0be5e2924",
         },
     },
     .paths = .{""},

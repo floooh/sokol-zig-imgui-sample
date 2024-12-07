@@ -21,7 +21,7 @@ pub fn build(b: *Build) !void {
     });
 
     // inject the cimgui header search path into the sokol C library compile step
-    const cimgui_root = dep_cimgui.namedWriteFiles("cimgui").getDirectory();
+    const cimgui_root = dep_cimgui.path("src");
     dep_sokol.artifact("sokol_clib").addIncludePath(cimgui_root);
 
     // from here on different handling for native vs wasm builds
