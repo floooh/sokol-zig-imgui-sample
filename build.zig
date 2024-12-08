@@ -10,10 +10,14 @@ pub fn build(b: *Build) !void {
     const optimize = b.standardOptimizeOption(.{});
 
     // note that the sokol dependency is built with `.with_sokol_imgui = true`
+    const sokol_imgui_prefix: []const u8 = "";
+    const cimgui_header_path: []const u8 = "zimgui.h";
     const dep_sokol = b.dependency("sokol", .{
         .target = target,
         .optimize = optimize,
         .with_sokol_imgui = true,
+        .sokol_imgui_cprefix = sokol_imgui_prefix,
+        .cimgui_header_path = cimgui_header_path,
     });
     const dep_cimgui = b.dependency("cimgui", .{
         .target = target,
