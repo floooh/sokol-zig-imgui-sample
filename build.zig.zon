@@ -7,8 +7,8 @@
             .hash = "12204ed5ca9d06c51dfd153ec689defdc34d877fb5532f1966226cc9975aa3a4be5f",
         },
         .cimgui = .{
-            .url = "git+https://github.com/floooh/dcimgui.git#71851ebf5393e229d31851cafebea2211f7b6d59",
-            .hash = "12201ef9ea6f0f413a94a58a4beecde0cb56a79586f04f1f0bf1b3e2d43f3d82411a",
+            .url = "git+https://github.com/floooh/dcimgui.git#6a072c75ee46f035a77dd77ee834721783798895",
+            .hash = "12207e22dc538d5d2bc494e9cbd84a42f2893beecf3f9e859ad4a532ac4fef44fb88",
         },
     },
     .paths = .{""},
