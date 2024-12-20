@@ -4,6 +4,8 @@
 
 Sample project for using Dear ImGui with the Sokol Zig bindings.
 
+> NOTE: no longer compatible with Zig 0.13.0, please use the latest Zig nightly
+
 On macOS, Windows and Linux just run:
 
 `zig build run`

@@ -21,41 +21,43 @@ pub fn build(b: *Build) !void {
     });
 
     // inject the cimgui header search path into the sokol C library compile step
-    const cimgui_root = dep_cimgui.path("src");
-    dep_sokol.artifact("sokol_clib").addIncludePath(cimgui_root);
+    dep_sokol.artifact("sokol_clib").addIncludePath(dep_cimgui.path("src"));
 
-    // from here on different handling for native vs wasm builds
-    if (target.result.isWasm()) {
-        try buildWasm(b, target, optimize, dep_sokol, dep_cimgui);
-    } else {
-        try buildNative(b, target, optimize, dep_sokol, dep_cimgui);
-    }
-}
-
-fn buildNative(b: *Build, target: ResolvedTarget, optimize: OptimizeMode, dep_sokol: *Dependency, dep_cimgui: *Dependency) !void {
-    const demo = b.addExecutable(.{
-        .name = "demo",
+    // main module with sokol and cimgui imports
+    const mod_main = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
+        .imports = &.{
+            .{ .name = "sokol", .module = dep_sokol.module("sokol") },
+            .{ .name = "cimgui", .module = dep_cimgui.module("cimgui") },
+        },
     });
-    demo.root_module.addImport("sokol", dep_sokol.module("sokol"));
-    demo.root_module.addImport("cimgui", dep_cimgui.module("cimgui"));
-    b.installArtifact(demo);
-    b.step("run", "Run demo").dependOn(&b.addRunArtifact(demo).step);
+
+    // from here on different handling for native vs wasm builds
+    if (target.result.isWasm()) {
+        try buildWasm(b, mod_main, dep_sokol, dep_cimgui);
+    } else {
+        try buildNative(b, mod_main);
+    }
 }
 
-fn buildWasm(b: *Build, target: ResolvedTarget, optimize: OptimizeMode, dep_sokol: *Dependency, dep_cimgui: *Dependency) !void {
+fn buildNative(b: *Build, mod: *Build.Module) !void {
+    const exe = b.addExecutable(.{
+        .name = "demo",
+        .root_module = mod,
+    });
+    b.installArtifact(exe);
+    b.step("run", "Run demo").dependOn(&b.addRunArtifact(exe).step);
+}
+
+fn buildWasm(b: *Build, mod: *Build.Module, dep_sokol: *Dependency, dep_cimgui: *Dependency) !void {
     // build the main file into a library, this is because the WASM 'exe'
     // needs to be linked in a separate build step with the Emscripten linker
     const demo = b.addStaticLibrary(.{
         .name = "demo",
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = mod,
     });
-    demo.root_module.addImport("sokol", dep_sokol.module("sokol"));
-    demo.root_module.addImport("cimgui", dep_cimgui.module("cimgui"));
 
     // get the Emscripten SDK dependency from the sokol dependency
     const dep_emsdk = dep_sokol.builder.dependency("emsdk", .{});
@@ -75,8 +77,8 @@ fn buildWasm(b: *Build, target: ResolvedTarget, optimize: OptimizeMode, dep_soko
     // create a build step which invokes the Emscripten linker
     const link_step = try sokol.emLinkStep(b, .{
         .lib_main = demo,
-        .target = target,
-        .optimize = optimize,
+        .target = mod.resolved_target.?,
+        .optimize = mod.optimize.?,
         .emsdk = dep_emsdk,
         .use_webgl2 = true,
         .use_emmalloc = true,
