@@ -35,7 +35,7 @@ pub fn build(b: *Build) !void {
     });
 
     // from here on different handling for native vs wasm builds
-    if (target.result.isWasm()) {
+    if (target.result.cpu.arch.isWasm()) {
         try buildWasm(b, mod_main, dep_sokol, dep_cimgui);
     } else {
         try buildNative(b, mod_main);

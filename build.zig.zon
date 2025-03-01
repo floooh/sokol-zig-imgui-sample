@@ -1,14 +1,15 @@
 .{
-    .name = "sokol-zig-imgui-sample",
+    .name = .sokolzigimguisample,
     .version = "0.0.0",
+    .fingerprint = 0x60a713b269ae5b2,
     .dependencies = .{
         .sokol = .{
-            .url = "git+https://github.com/floooh/sokol-zig.git#89b4d017bf20283bebcd9ba4c17c64209e61881a",
-            .hash = "1220bb0b383f964f2c92ab0f0d3448db40482e7fa2c1671315e58dd52d326d389c1d",
+            .url = "git+https://github.com/floooh/sokol-zig.git#d8673ff12878fdb251d04ee97279cf30870e147f",
+            .hash = "sokol-0.1.0-pb1HK5NgNgDWuuAB-CpH2rAjRKIcuONrrFVDmyJaW4Ly",
         },
         .cimgui = .{
-            .url = "git+https://github.com/floooh/dcimgui.git#bb46ed120a0db5bcf4dee4c804466986c8f48ed9",
-            .hash = "122052771be0e72e98ceb59ad6c4c476f105171ac3e22dd28d8c3dd8a4590a333b92",
+            .url = "git+https://github.com/floooh/dcimgui.git#387dd2b3dcbb3380ad35b8efa54624564ecfd759",
+            .hash = "cimgui-0.1.0-44ClkVShhQApVaApfb_mhXPpp08yqiB3zIBR0WYjbwwI",
         },
     },
     .paths = .{""},
