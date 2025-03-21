@@ -42,6 +42,7 @@ export fn frame() void {
     ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
     _ = ig.igBegin("Hello Dear ImGui!", 0, ig.ImGuiWindowFlags_None);
     _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);
+    _ = ig.igText("Dear ImGui Version: %s", ig.IMGUI_VERSION);
     ig.igEnd();
     //=== UI CODE ENDS HERE
 
