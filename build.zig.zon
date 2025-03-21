@@ -8,12 +8,8 @@
             .hash = "sokol-0.1.0-pb1HK5XdOQBERyKPPDUAvKpKELCH0FldJD_Y1nkelJyo",
         },
         .cimgui = .{
-            .url = "git+https://github.com/floooh/dcimgui.git#387dd2b3dcbb3380ad35b8efa54624564ecfd759",
-            .hash = "cimgui-0.1.0-44ClkVShhQApVaApfb_mhXPpp08yqiB3zIBR0WYjbwwI",
-        },
-        .dcimgui = .{
-            .url = "git+https://github.com/floooh/sokol-zig.git#15cc43a2d9d2e26b000d33a5d76f095d5310c454",
-            .hash = "sokol-0.1.0-pb1HK5XdOQBERyKPPDUAvKpKELCH0FldJD_Y1nkelJyo",
+            .url = "git+https://github.com/floooh/dcimgui.git#3969c14f7c7abda0e4b59d2616b17b7fb9eb0827",
+            .hash = "cimgui-0.1.0-44ClkTt5hgBU8BelH8W_G8mso3ys_hrqNUWwJvaxXDs5",
         },
     },
     .paths = .{""},
