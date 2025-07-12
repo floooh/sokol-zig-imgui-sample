@@ -8,8 +8,8 @@
             .hash = "sokol-0.1.0-pb1HK_uSLQDmVa0mXFtgrAVz1wCKkKn4PgammXJXiIui",
         },
         .cimgui = .{
-            .url = "git+https://github.com/floooh/dcimgui.git#7d1ea4854bfc33bcb506f74fca8a607e13807515",
-            .hash = "cimgui-0.1.0-44ClkavDjQDUyJUoFZvVBMV2hdBjxn1UVPQVt0sw6_Vz",
+            .url = "git+https://github.com/floooh/dcimgui.git#3b98e0a57fc17cc72fdda6934bd932426778a16e",
+            .hash = "cimgui-0.1.0-44ClkczdkgCE9Z_0ehliUmEJjg-bjQVy1r55RQPw9N10",
         },
     },
     .paths = .{""},
