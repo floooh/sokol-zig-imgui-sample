@@ -10,15 +10,10 @@ pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    // NOTE: the selection between docking and non-docking here is too error-prone
-    // since the Zig module (cimgui_docking vs cimgui), the C header search path
-    // (src-docking vs src) and the C library name (cimgui_docking_clib vs
-    // cimgui_clib) must all match, and if any doesn't match then all hell might break lose.
-    //
-    // Maybe add a helper function to dcimgui/build.zig which returns the right
-    // module name, include path and C library name based on docking enabled/disabled?
-    //
     const opt_docking = b.option(bool, "docking", "Build with docking support") orelse false;
+
+    // Get the matching Zig module name, C header search path and C library for
+    // vanilla imgui vs the imgui docking branch.
     const cimgui_conf = cimgui.getConfig(opt_docking);
 
     // note that the sokol dependency is built with `.with_sokol_imgui = true`
