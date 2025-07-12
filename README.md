@@ -13,3 +13,8 @@ On macOS, Windows and Linux just run:
 To build and run the web version:
 
 `zig build --release=small -Dtarget=wasm32-emscripten run`
+
+...or for the Dear ImGui docking branch:
+
+`zig build -Ddocking run`
+`zig build --release=small -Ddocking -Dtarget=wasm32-emscripten run`

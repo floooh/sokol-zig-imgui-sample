@@ -1,4 +1,5 @@
-const ig = @import("cimgui");
+const use_docking = @import("build_options").docking;
+const ig = if (use_docking) @import("cimgui_docking") else @import("cimgui");
 const sokol = @import("sokol");
 const slog = sokol.log;
 const sg = sokol.gfx;
@@ -8,6 +9,8 @@ const simgui = sokol.imgui;
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
+    var show_first_window: bool = true;
+    var show_second_window: bool = true;
 };
 
 export fn init() void {
@@ -20,6 +23,9 @@ export fn init() void {
     simgui.setup(.{
         .logger = .{ .func = slog.func },
     });
+    if (use_docking) {
+        ig.igGetIO().*.ConfigFlags |= ig.ImGuiConfigFlags_DockingEnable;
+    }
 
     // initial clear color
     state.pass_action.colors[0] = .{
@@ -37,12 +43,31 @@ export fn frame() void {
         .dpi_scale = sapp.dpiScale(),
     });
 
+    const backendName: [*c]const u8 = switch (sg.queryBackend()) {
+        .D3D11 => "Direct3D11",
+        .GLCORE => "OpenGL",
+        .GLES3 => "OpenGLES3",
+        .METAL_IOS => "Metal iOS",
+        .METAL_MACOS => "Metal macOS",
+        .METAL_SIMULATOR => "Metal Simulator",
+        .WGPU => "WebGPU",
+        .DUMMY => "Dummy",
+    };
+
     //=== UI CODE STARTS HERE
     ig.igSetNextWindowPos(.{ .x = 10, .y = 10 }, ig.ImGuiCond_Once);
     ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
-    _ = ig.igBegin("Hello Dear ImGui!", 0, ig.ImGuiWindowFlags_None);
-    _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);
-    _ = ig.igText("Dear ImGui Version: %s", ig.IMGUI_VERSION);
+    if (ig.igBegin("Hello Dear ImGui!", &state.show_first_window, ig.ImGuiWindowFlags_None)) {
+        _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);
+        _ = ig.igText("Dear ImGui Version: %s", ig.IMGUI_VERSION);
+    }
+    ig.igEnd();
+
+    ig.igSetNextWindowPos(.{ .x = 50, .y = 120 }, ig.ImGuiCond_Once);
+    ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
+    if (ig.igBegin("Another Window", &state.show_second_window, ig.ImGuiWindowFlags_None)) {
+        _ = ig.igText("Sokol Backend: %s", backendName);
+    }
     ig.igEnd();
     //=== UI CODE ENDS HERE
 
