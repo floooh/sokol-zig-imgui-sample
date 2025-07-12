@@ -9,7 +9,7 @@
         },
         .cimgui = .{
             .url = "../dcimgui",
-            .hash = "cimgui-0.1.0-44ClkUH8ygL11PjaMdGee5rUOsMbxNRRDIXC4MV5kKnR",
+            .hash = "cimgui-0.1.0-44ClkRL_ygIA7TontT1mn89sfRJYPozKnlblUXE11LYp",
         },
     },
     .paths = .{""},

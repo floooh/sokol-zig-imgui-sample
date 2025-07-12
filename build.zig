@@ -4,6 +4,7 @@ const OptimizeMode = std.builtin.OptimizeMode;
 const ResolvedTarget = Build.ResolvedTarget;
 const Dependency = Build.Dependency;
 const sokol = @import("sokol");
+const cimgui = @import("cimgui");
 
 pub fn build(b: *Build) !void {
     const target = b.standardTargetOptions(.{});
@@ -18,9 +19,7 @@ pub fn build(b: *Build) !void {
     // module name, include path and C library name based on docking enabled/disabled?
     //
     const opt_docking = b.option(bool, "docking", "Build with docking support") orelse false;
-    const cimgui_mod_name = if (opt_docking) "cimgui_docking" else "cimgui";
-    const cimgui_include_path = if (opt_docking) "src-docking" else "src";
-    const cimgui_clib_name = if (opt_docking) "cimgui_docking_clib" else "cimgui_clib";
+    const cimgui_conf = cimgui.getConfig(opt_docking);
 
     // note that the sokol dependency is built with `.with_sokol_imgui = true`
     const dep_sokol = b.dependency("sokol", .{
@@ -34,7 +33,7 @@ pub fn build(b: *Build) !void {
     });
 
     // inject the cimgui header search path into the sokol C library compile step
-    dep_sokol.artifact("sokol_clib").addIncludePath(dep_cimgui.path(cimgui_include_path));
+    dep_sokol.artifact("sokol_clib").addIncludePath(dep_cimgui.path(cimgui_conf.include_dir));
 
     // main module with sokol and cimgui imports
     const mod_main = b.createModule(.{
@@ -43,7 +42,7 @@ pub fn build(b: *Build) !void {
         .optimize = optimize,
         .imports = &.{
             .{ .name = "sokol", .module = dep_sokol.module("sokol") },
-            .{ .name = cimgui_mod_name, .module = dep_cimgui.module(cimgui_mod_name) },
+            .{ .name = cimgui_conf.module_name, .module = dep_cimgui.module(cimgui_conf.module_name) },
         },
     });
     const mod_options = b.addOptions();
@@ -56,7 +55,7 @@ pub fn build(b: *Build) !void {
             .mod_main = mod_main,
             .dep_sokol = dep_sokol,
             .dep_cimgui = dep_cimgui,
-            .cimgui_clib_name = cimgui_clib_name,
+            .cimgui_clib_name = cimgui_conf.clib_name,
         });
     } else {
         try buildNative(b, mod_main);
