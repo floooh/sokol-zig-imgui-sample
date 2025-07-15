@@ -76,7 +76,7 @@ const BuildWasmOptions = struct {
 fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
     // build the main file into a library, this is because the WASM 'exe'
     // needs to be linked in a separate build step with the Emscripten linker
-    const demo = b.addStaticLibrary(.{
+    const demo = b.addLibrary(.{
         .name = "demo",
         .root_module = opts.mod_main,
     });
