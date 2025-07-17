@@ -17,4 +17,5 @@ To build and run the web version:
 ...or for the Dear ImGui docking branch:
 
 `zig build -Ddocking run`
+
 `zig build --release=small -Ddocking -Dtarget=wasm32-emscripten run`
