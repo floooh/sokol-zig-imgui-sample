@@ -21,6 +21,7 @@ pub fn build(b: *Build) !void {
         .target = target,
         .optimize = optimize,
         .with_sokol_imgui = true,
+        .with_tracing = true,
     });
     const dep_cimgui = b.dependency("cimgui", .{
         .target = target,
