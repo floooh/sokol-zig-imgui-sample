@@ -1,5 +1,6 @@
 const use_docking = @import("build_options").docking;
 const ig = if (use_docking) @import("cimgui_docking") else @import("cimgui");
+const std = @import("std");
 const sokol = @import("sokol");
 const slog = sokol.log;
 const sg = sokol.gfx;
@@ -58,19 +59,34 @@ export fn frame() void {
         .DUMMY => "Dummy",
     };
 
+    var buffer: [128:0]u8 = undefined;
+
     //=== UI CODE STARTS HERE
     ig.igSetNextWindowPos(.{ .x = 10, .y = 30 }, ig.ImGuiCond_Once);
     ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
     if (ig.igBegin("Hello Dear ImGui!", &state.show_first_window, ig.ImGuiWindowFlags_None)) {
         _ = ig.igColorEdit3("Background", &state.pass_action.colors[0].clear_value.r, ig.ImGuiColorEditFlags_None);
-        _ = ig.igText("Dear ImGui Version: %s", ig.IMGUI_VERSION);
+
+        // Use this with zig 0.16+, which is currently in development
+        // _ = std.fmt.bufPrintSentinel(&buffer, "Dear ImGui Version: {s}", .{ig.IMGUI_VERSION}, 0) catch @panic("OOM");
+
+        // Use this with zig 0.15.2, which is currently the stable release
+        _ = std.fmt.bufPrintZ(&buffer, "Dear ImGui Version: {s}", .{ig.IMGUI_VERSION}) catch @panic("OOM");
+
+        ig.igTextEx(&buffer);
     }
     ig.igEnd();
 
     ig.igSetNextWindowPos(.{ .x = 50, .y = 150 }, ig.ImGuiCond_Once);
     ig.igSetNextWindowSize(.{ .x = 400, .y = 100 }, ig.ImGuiCond_Once);
     if (ig.igBegin("Another Window", &state.show_second_window, ig.ImGuiWindowFlags_None)) {
-        _ = ig.igText("Sokol Backend: %s", backendName);
+        // Use this with zig 0.16+, which is currently in development
+        // _ = std.fmt.bufPrintSentinel(&buffer, "Sokol Backend: {s}", .{backendName}, 0) catch @panic("OOM");
+
+        // Use this with zig 0.15.2, which is currently the stable release
+        _ = std.fmt.bufPrintZ(&buffer, "Sokol Backend: {s}", .{backendName}) catch @panic("OOM");
+
+        ig.igTextEx(&buffer);
     }
     ig.igEnd();
 
