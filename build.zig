@@ -29,7 +29,7 @@ pub fn build(b: *Build) !void {
     });
 
     // inject the cimgui header search path into the sokol C library compile step
-    dep_sokol.artifact("sokol_clib").addIncludePath(dep_cimgui.path(cimgui_conf.include_dir));
+    dep_sokol.artifact("sokol_clib").root_module.addIncludePath(dep_cimgui.path(cimgui_conf.include_dir));
 
     // main module with sokol and cimgui imports
     const mod_main = b.createModule(.{
@@ -89,7 +89,7 @@ fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
     // the cimgui C library otherwise the C/C++ code won't find
     // C stdlib headers
     const emsdk_incl_path = dep_emsdk.path("upstream/emscripten/cache/sysroot/include");
-    opts.dep_cimgui.artifact(opts.cimgui_clib_name).addSystemIncludePath(emsdk_incl_path);
+    opts.dep_cimgui.artifact(opts.cimgui_clib_name).root_module.addSystemIncludePath(emsdk_incl_path);
 
     // all C libraries need to depend on the sokol library, when building for
     // WASM this makes sure that the Emscripten SDK has been setup before
