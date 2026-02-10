@@ -29,7 +29,7 @@ pub fn build(b: *Build) !void {
     });
 
     // inject the cimgui header search path into the sokol C library compile step
-    dep_sokol.artifact("sokol_clib").addIncludePath(dep_cimgui.path(cimgui_conf.include_dir));
+    dep_sokol.module("mod_sokol_clib").addIncludePath(dep_cimgui.path(cimgui_conf.include_dir));
 
     // main module with sokol and cimgui imports
     const mod_main = b.createModule(.{
@@ -52,6 +52,7 @@ pub fn build(b: *Build) !void {
             .dep_sokol = dep_sokol,
             .dep_cimgui = dep_cimgui,
             .cimgui_clib_name = cimgui_conf.clib_name,
+            .cimgui_mod_clib_name = b.fmt("mod_{s}", .{cimgui_conf.clib_name}),
         });
     } else {
         try buildNative(b, mod_main);
@@ -72,6 +73,7 @@ const BuildWasmOptions = struct {
     dep_sokol: *Dependency,
     dep_cimgui: *Dependency,
     cimgui_clib_name: []const u8,
+    cimgui_mod_clib_name: []const u8,
 };
 
 fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
@@ -89,7 +91,7 @@ fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
     // the cimgui C library otherwise the C/C++ code won't find
     // C stdlib headers
     const emsdk_incl_path = dep_emsdk.path("upstream/emscripten/cache/sysroot/include");
-    opts.dep_cimgui.artifact(opts.cimgui_clib_name).addSystemIncludePath(emsdk_incl_path);
+    opts.dep_cimgui.module(opts.cimgui_mod_clib_name).addSystemIncludePath(emsdk_incl_path);
 
     // all C libraries need to depend on the sokol library, when building for
     // WASM this makes sure that the Emscripten SDK has been setup before

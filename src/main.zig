@@ -73,7 +73,7 @@ export fn frame() void {
         // Use this with zig 0.15.2, which is currently the stable release
         _ = std.fmt.bufPrintZ(&buffer, "Dear ImGui Version: {s}", .{ig.IMGUI_VERSION}) catch @panic("OOM");
 
-        ig.igTextEx(&buffer);
+        ig.igTextUnformatted(&buffer);
     }
     ig.igEnd();
 
@@ -86,7 +86,7 @@ export fn frame() void {
         // Use this with zig 0.15.2, which is currently the stable release
         _ = std.fmt.bufPrintZ(&buffer, "Sokol Backend: {s}", .{backendName}) catch @panic("OOM");
 
-        ig.igTextEx(&buffer);
+        ig.igTextUnformatted(&buffer);
     }
     ig.igEnd();
 
