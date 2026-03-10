@@ -4,12 +4,12 @@
     .fingerprint = 0x60a713b269ae5b2,
     .dependencies = .{
         .sokol = .{
-            .url = "git+https://github.com/floooh/sokol-zig.git#baa842af7081c0d26d94847c5ecb398d8c5005cb",
-            .hash = "sokol-0.1.0-pb1HK_-oNgARi7JDvtvcu9fo8-5ArHCZ3u2bcBsFsu0y",
+            .url = "git+https://github.com/floooh/sokol-zig.git#de5906fb0f81f96e92c1c67a2b8a24dc50872207",
+            .hash = "sokol-0.1.0-pb1HK9ngNgD_m7L3HpbsyJ-jHRGVzcd672pjJDEPBQWh",
         },
         .cimgui = .{
-            .url = "git+https://github.com/floooh/dcimgui.git#4bc7f9147073585b46e81ec750bffda2eb6d6832",
-            .hash = "cimgui-0.1.0-44ClkdQjlQDAxGXHT035QPGsTEex3c7VXeDkqJG8eUqO",
+            .url = "git+https://github.com/floooh/dcimgui.git#7621a8cb81ee4bb87767e6c81dc5b0bd40cfd442",
+            .hash = "cimgui-0.1.0-44ClkaTclwDxGs3Mn34j6NiB-kfbtUurNDAnJVMKWtSU",
         },
     },
     .paths = .{""},
