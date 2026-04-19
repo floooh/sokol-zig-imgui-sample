@@ -8,6 +8,14 @@ const sglue = sokol.glue;
 const simgui = sokol.imgui;
 const sgimgui = sokol.sgimgui;
 
+const std = @import("std");
+pub const panic = std.debug.FullPanic(wasmPanic);
+fn wasmPanic(msg: []const u8, ret_addr: ?usize) noreturn {
+    _ = msg;
+    _ = ret_addr;
+    @trap();
+}
+
 const state = struct {
     var pass_action: sg.PassAction = .{};
     var show_first_window: bool = true;
