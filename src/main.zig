@@ -7,6 +7,7 @@ const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
 const sgimgui = sokol.sgimgui;
+const sappimgui = sokol.sappimgui;
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
@@ -21,6 +22,7 @@ export fn init() void {
         .logger = .{ .func = slog.func },
     });
     // the debug/tracing ui
+    sappimgui.setup();
     sgimgui.setup(.{});
     // initialize sokol-imgui
     simgui.setup(.{
@@ -45,6 +47,7 @@ export fn frame() void {
         .delta_time = sapp.frameDuration(),
         .dpi_scale = sapp.dpiScale(),
     });
+    sappimgui.trackFrame();
 
     const backendName: [*c]const u8 = switch (sg.queryBackend()) {
         .D3D11 => "Direct3D11",
@@ -77,9 +80,11 @@ export fn frame() void {
     // the sokol-gfx-imgui debugging ui
     if (ig.igBeginMainMenuBar()) {
         sgimgui.drawMenu("sokol-gfx");
+        sappimgui.drawMenu("sokol-app");
         ig.igEndMainMenuBar();
     }
     sgimgui.draw();
+    sappimgui.draw();
     //=== UI CODE ENDS HERE
 
     // call simgui.render() inside a sokol-gfx pass
@@ -90,12 +95,14 @@ export fn frame() void {
 }
 
 export fn cleanup() void {
+    sappimgui.shutdown();
     simgui.shutdown();
     sgimgui.shutdown();
     sg.shutdown();
 }
 
 export fn event(ev: [*c]const sapp.Event) void {
+    sappimgui.trackEvent(ev.*);
     // forward input events to sokol-imgui
     _ = simgui.handleEvent(ev.*);
 }
