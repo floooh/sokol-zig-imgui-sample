@@ -105,7 +105,6 @@ fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
         .emsdk = dep_emsdk,
         .use_webgl2 = true,
         .use_emmalloc = true,
-        .use_filesystem = false,
         .shell_file_path = opts.dep_sokol.path("src/sokol/web/shell.html"),
     });
     // attach to default target
