@@ -4,7 +4,9 @@
 
 Sample project for using Dear ImGui with the Sokol Zig bindings.
 
-> NOTE: no longer compatible with Zig 0.13.0, please use the latest Zig nightly
+> [!NOTE]
+>  the Emscripten version currently requires Zig 0.17.0-dev,
+> the native version works with 0.16.0
 
 On macOS, Windows and Linux just run:
 
