@@ -6,8 +6,8 @@ const sg = sokol.gfx;
 const sapp = sokol.app;
 const sglue = sokol.glue;
 const simgui = sokol.imgui;
-const sgimgui = sokol.sgimgui;
-const sappimgui = sokol.sappimgui;
+const sgimgui = sokol.gfximgui;
+const sappimgui = sokol.appimgui;
 
 const state = struct {
     var pass_action: sg.PassAction = .{};
