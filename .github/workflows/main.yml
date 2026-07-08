@@ -16,9 +16,11 @@ jobs:
       - name: prepare-linux
         if: runner.os == 'Linux'
         run: |
-            sudo apt-get update
-            sudo apt-get install libglu1-mesa-dev mesa-common-dev xorg-dev libasound-dev
+          sudo apt-get update
+          sudo apt-get install libglu1-mesa-dev mesa-common-dev xorg-dev libasound-dev
       - name: build-native
         run: zig build --summary all
       - name: build-web
-        run: zig build --summary all -Dtarget=wasm32-emscripten
+        run: |
+          zig build install-emsdk
+          zig build --summary all -Dtarget=wasm32-emscripten
