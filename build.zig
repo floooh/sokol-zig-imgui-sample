@@ -56,6 +56,10 @@ pub fn build(b: *Build) !void {
     } else {
         try buildNative(b, mod_main);
     }
+
+    // add an emsdk install step
+    const emsdk_install_step = sokol.emSdkInstallStep(b, dep_sokol.builder.dependency("emsdk", .{}), .{});
+    b.step("install-emsdk", "Install Emscripten SDK in zig-pkg").dependOn(emsdk_install_step);
 }
 
 fn buildNative(b: *Build, mod: *Build.Module) !void {

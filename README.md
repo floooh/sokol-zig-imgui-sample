@@ -5,14 +5,19 @@
 Sample project for using Dear ImGui with the Sokol Zig bindings.
 
 > [!NOTE]
->  the Emscripten version currently requires Zig 0.17.0-dev,
-> the native version works with 0.16.0
+> requires zig 0.17.0-dev (as of 0.17.0-dev.1252)
 
 On macOS, Windows and Linux just run:
 
 `zig build run`
 
 To build and run the web version:
+
+First install a local Emscripten SDK into `./zig-pkg/`:
+
+`zig build install-emsdk`
+
+Then build and run for target `wasm32-emscripten`:
 
 `zig build --release=small -Dtarget=wasm32-emscripten run`
 
