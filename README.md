@@ -5,7 +5,7 @@
 Sample project for using Dear ImGui with the Sokol Zig bindings.
 
 > [!NOTE]
-> requires zig 0.17.0-dev (as of 0.17.0-dev.1564)
+> requires zig 0.17.0-dev (as of 0.17.0-dev.1737+de207594e)
 
 On macOS, Windows and Linux just run:
 
