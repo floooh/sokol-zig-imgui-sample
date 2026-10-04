@@ -88,8 +88,9 @@ export fn frame() void {
     //=== UI CODE ENDS HERE
 
     // call simgui.render() inside a sokol-gfx pass
+    simgui.flush();
     sg.beginPass(.{ .action = state.pass_action, .swapchain = sglue.swapchain() });
-    simgui.render();
+    simgui.draw();
     sg.endPass();
     sg.commit();
 }
