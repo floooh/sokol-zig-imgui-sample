@@ -105,7 +105,7 @@ fn buildWasm(b: *Build, opts: BuildWasmOptions) !void {
     const link_step = try sokol.emLinkStep(b, .{
         .lib_main = demo,
         .target = opts.mod_main.resolved_target.?,
-        .optimize = opts.mod_main.optimize.?,
+        .optimize = opts.mod_main.optimize,
         .emsdk = dep_emsdk,
         .use_webgl2 = true,
         .use_emmalloc = true,
